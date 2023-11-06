@@ -1,19 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Header
-import stripe
 from firebase_admin import auth
 from database.firebase import db
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from classes.schema_dto import User
+import stripe
 
 router = APIRouter(
     tags=["Stripe"],
     prefix='/stripe'
 )
 
-# Endpoint pour créer une session de paiement Stripe
 @router.get('/checkout')
-async def stripe_checkout(user: User = Depends(get_current_user)):
+async def stripe_checkout(user: int = Depends(get_current_user)):
     try:
         checkout_session = stripe.checkout.Session.create(
             line_items=[
@@ -25,7 +24,7 @@ async def stripe_checkout(user: User = Depends(get_current_user)):
             payment_method_types=['card'],
             success_url='YOUR_SUCCESS_URL',  # Remplacez par votre URL de succès
             cancel_url='YOUR_CANCEL_URL',  # Remplacez par votre URL d'annulation
-            client_reference_id=user.email  # Utilisez l'e-mail de l'utilisateur comme référence
+            client_reference_id=user.email  
         )
         return {"checkout_url": checkout_session['url']}
     except Exception as e:
@@ -34,7 +33,7 @@ async def stripe_checkout(user: User = Depends(get_current_user)):
 # Endpoint pour gérer les webhooks Stripe
 @router.post('/webhook')
 async def webhook_received(request: Request, stripe_signature: str = Header(None)):
-    webhook_secret = "whsec_f6de37ea1d173a3db4295ec622b17c148f71829c171080078c73e35ef0f64065"  # Remplacez par votre secret de webhook Stripe
+    webhook_secret = "whsec_f6de37ea1d173a3db4295ec622b17c148f71829c171080078c73e35ef0f64065" 
     data = await request.body()
     try:
         event = stripe.Webhook.construct_event(
