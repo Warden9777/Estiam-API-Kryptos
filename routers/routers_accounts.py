@@ -1,7 +1,8 @@
 import uuid
 from fastapi import APIRouter, HTTPException
-
 from classes.schema_dto import User
+from firebase_admin import auth
+from pydantic import BaseModel
 
 router = APIRouter(
     tags=["UserAccounts"]

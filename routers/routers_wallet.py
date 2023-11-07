@@ -1,6 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from typing import List
+from classes.exemples import CryptoCurrency
+from firebase_admin import auth
+from pydantic import BaseModel
 import uuid
 
 # Modèle Pydantic pour la gestion des portefeuilles de cryptomonnaies
@@ -14,10 +17,8 @@ class CryptoCurrency(BaseModel):
     name: str
     amount: float
 
-# Liste de données pour les portefeuilles de cryptomonnaies (simulé)
 crypto_wallets = []
 
-# Créez un routeur pour la gestion des portefeuilles de cryptomonnaies
 router = APIRouter(
     tags=["CryptoWallets"]
 )
@@ -25,7 +26,6 @@ router = APIRouter(
 # Endpoint pour créer un portefeuille de cryptomonnaies
 @router.post('/crypto-wallets', status_code=201)
 async def create_crypto_wallet(crypto_wallet: CryptoWallet):
-    # Générer un nouvel ID unique pour le portefeuille
     crypto_wallet.id = str(uuid.uuid4())
     crypto_wallets.append(crypto_wallet)
     return crypto_wallet
