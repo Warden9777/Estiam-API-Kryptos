@@ -14,7 +14,7 @@ api = FastAPI(
     docs_url='/'
 )
 
-api.include_router(routers.routers_accounts)
-api.include_router(routers.routers_auth)
-api.include_router(routers.routers_stripe)
-api.include_router(routers.routers_wallet)
+api.include_router(routers.routers_accounts.router)
+api.include_router(routers.routers_auth.router)
+api.include_router(routers.routers_stripe.router)
+api.include_router(routers.routers_wallet.router)
