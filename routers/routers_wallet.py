@@ -15,11 +15,6 @@ class CryptoWallet(BaseModel):
     user_id: str
     crypto_currencies: List[CryptoCurrency]
 
-class CryptoCurrency(BaseModel):
-    id: str
-    name: str
-    amount: float
-
 crypto_wallets = []
 
 router = APIRouter(

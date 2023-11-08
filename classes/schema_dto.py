@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import List
-from exemples import CryptoCurrency
+from classes.exemples import CryptoCurrency
 
 class User(BaseModel):
     email: str
