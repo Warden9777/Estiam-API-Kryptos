@@ -2,10 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from typing import List
 from classes.exemples import CryptoCurrency
+from classes.schema_dto import CryptoCurrency as CCModel
 from database.firebase import db
 from firebase_admin import auth
 from classes.schema_dto import User
-from routers_auth import get_current_user
+from routers.routers_auth import get_current_user
 from pydantic import BaseModel
 import uuid
 
@@ -13,7 +14,7 @@ import uuid
 class CryptoWallet(BaseModel):
     id: str
     user_id: str
-    crypto_currencies: List[CryptoCurrency]
+    crypto_currencies: List[CCModel]
 
 crypto_wallets = []
 
