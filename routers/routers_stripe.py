@@ -4,6 +4,7 @@ from database.firebase import db
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 from classes.schema_dto import User
+from routers_auth import get_current_user
 import stripe
 
 router = APIRouter(

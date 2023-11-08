@@ -2,7 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from typing import List
 from classes.exemples import CryptoCurrency
+from database.firebase import db
 from firebase_admin import auth
+from classes.schema_dto import User
+from routers_auth import get_current_user
 from pydantic import BaseModel
 import uuid
 
@@ -62,4 +65,28 @@ async def delete_crypto_wallet(wallet_id: str):
             return
     raise HTTPException(status_code=404, detail="Crypto wallet not found")
 
-# Vous pouvez ajouter d'autres fonctionnalités, telles que l'ajout, le retrait ou l'échange de cryptomonnaies dans le portefeuille.
+def get_user_wallet_balance(user_id):
+    try:
+        user_balance_ref = db.child("users").child(user_id).child("balance")
+
+        wallet_balance = user_balance_ref.get().val()
+
+        if wallet_balance is not None:
+            return wallet_balance
+        else:
+            return 0.0
+    except Exception as e:
+        raise Exception("Erreur lors de la récupération du solde du compte : " + str(e))
+
+# Endpoint pour obtenir le solde du compte de l'utilisateur
+@router.get('/balance')
+async def get_wallet_balance(user_id: str = Depends(get_current_user)):
+    try:
+        # Obtenez l'ID de l'utilisateur à partir des données de l'utilisateur actuel
+        user_id = user_id['uid']
+        # Obtenez le solde du compte de l'utilisateur à partir de votre source de données (par exemple, Firebase)
+        wallet_balance = get_user_wallet_balance(user_id)
+        return {"user_id": user_id, "balance": wallet_balance}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Erreur lors de la récupération du solde du compte")
+
