@@ -6,7 +6,7 @@ client = TestClient(api)
 def test_valid_user():
   response = client.post("/auth/signup", json= {
     "email": "test.user1@gmail.com",
-    "password": "password"
+    "password": "password1"
   })
   assert response.status_code == 201
 

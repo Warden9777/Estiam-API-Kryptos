@@ -1,6 +1,7 @@
 import json
 import firebase_admin
 from firebase_admin import credentials
+from firebase_admin import auth
 import pyrebase 
 
 from dotenv import dotenv_values
