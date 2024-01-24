@@ -1,5 +1,8 @@
 from fastapi.testclient import TestClient
 import pytest
+from firebase_admin import credentials
+from firebase_admin import auth
+from database import firebase
 from main import api
 from classes.schema_dto import CryptoCurrency, Wallet
 

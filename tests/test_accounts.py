@@ -1,5 +1,8 @@
 from fastapi.testclient import TestClient
 from main import api
+from firebase_admin import credentials
+from firebase_admin import auth
+from database import firebase
 import pytest
 from classes.schema_dto import User
 
